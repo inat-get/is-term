@@ -13,4 +13,6 @@ Gem::Specification::new do |spec|
   spec.files = Dir["lib/**/*", "README.md", "LICENSE"]
 
   spec.required_ruby_version = '>= 3.4'
+
+  spec.add_dependency 'tty-screen', '~> 0.8'
 end

@@ -2,10 +2,12 @@ PATH
   remote: .
   specs:
     is-term (0.8.0)
+      tty-screen (~> 0.8)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    tty-screen (0.8.2)
 
 PLATFORMS
   ruby
@@ -16,6 +18,7 @@ DEPENDENCIES
 
 CHECKSUMS
   is-term (0.8.0)
+  tty-screen (0.8.2) sha256=c090652115beae764336c28802d633f204fb84da93c6a968aa5d8e319e819b50
 
 BUNDLED WITH
   4.0.4
