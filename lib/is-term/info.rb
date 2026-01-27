@@ -15,8 +15,8 @@ module IS::Term::Info
   LICENSE = "GPL-3.0-or-later"
   LICENSE_URL = "https://github.com/inat-get/is-term/blob/main/LICENSE"
 
-  SUMMARY = "iNaturalist API Query Tool"
-  DESCRIPTION = "iNaturalist API query builder and analytics tool"
+  SUMMARY = "Terminal utilities for Ruby scripts"
+  DESCRIPTION = "Terminal utilities for Ruby scripts."
 
   HOMEPAGE = "https://github.com/inat-get/is-term"
 
