@@ -16,6 +16,9 @@ Gem::Specification::new do |spec|
 
   spec.add_dependency 'tty-screen', '~> 0.8'
 
+  spec.add_development_dependency 'rdoc'
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'yard'
+  spec.add_development_dependency 'redcarpet'
 end

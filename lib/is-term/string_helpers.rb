@@ -19,7 +19,9 @@ require_relative 'info'
   #
   # == Usage
   #
-  # Standalone (no refinements):
+  #   require 'is-term/string_helpers'
+  #
+  # Standalone (no refinements, no includes):
   #   IS::Term::StringHelpers.str_width("中👨‍⚕️")
   #   # => 4
   #
@@ -33,23 +35,23 @@ require_relative 'info'
   #   "中👨‍⚕️".width       # => 4
   #   "中👨‍⚕️".ellipsis(3) # => "中…"
   #
-  # == Alignment Constants
-  #
-  # * {ALIGN_LEFT}
-  # * {ALIGN_RIGHT}
-  # * {ALIGN_CENTER}
 module IS::Term::StringHelpers
 
+  # @private
   ESC_CODES = /\e\[[0-9;]*[a-zA-Z]/
+  # @private
   EMOJI     = /\p{Emoji_Presentation}/
+  # @private
   EAST_ASIA = /\p{Han}|\p{Hiragana}|\p{Katakana}|\p{Hangul}/
 
-  # Aligns string to the left within specified width
+  private_constant :ESC_CODES, :EMOJI, :EAST_ASIA
+
   ALIGN_LEFT   = :left
-  # Aligns string to the right within specified width
   ALIGN_RIGHT  = :right
-  # Centers string within specified width
   ALIGN_CENTER = :center
+
+  DEFAULT_ELLIPSIS_MARKER = '…'
+  DEFAULT_ALIGN_MODE = ALIGN_LEFT
 
   # Calculates the display width of a string in terminal context.
   #
@@ -62,7 +64,7 @@ module IS::Term::StringHelpers
   # @param str [String] Input string
   # @return [Integer] Display width in columns
   # @example
-  #   IS::Term::StringHelpers.str_width("中👨‍⚕️A") # => 5
+  #   IS::Term::StringHelpers.str_width("中👨‍⚕️A")         # => 5
   #   IS::Term::StringHelpers.str_width("\e[31mHi\e[0m") # => 2
   def str_width str
     current = 0
@@ -91,7 +93,7 @@ module IS::Term::StringHelpers
   # @return [String] Truncated string (may be empty)
   # @raise +ArgumentError+ if width is invalid
   # @example
-  #   IS::Term::StringHelpers.str_truncate("中ABC", 2) # => "中"
+  #   IS::Term::StringHelpers.str_truncate("中ABC", 2)            # => "中"
   #   IS::Term::StringHelpers.str_truncate("\e[31mHello\e[0m", 3) # => "\e[31mHel"
   def str_truncate str, width
     return str if str.length <= width
@@ -125,9 +127,9 @@ module IS::Term::StringHelpers
   # @return [String] Truncated string with marker or original string
   # @raise +ArgumentError+ if {str_width} of +marker+ > +width+
   # @example
-  #   IS::Term::StringHelpers.str_ellipsis("中ABC", 3) # => "中…"
+  #   IS::Term::StringHelpers.str_ellipsis("中ABC", 3)  # => "中…"
   #   IS::Term::StringHelpers.str_ellipsis("short", 10) # => "short"
-  def str_ellipsis str, width, marker = "…"
+  def str_ellipsis str, width, marker = DEFAULT_ELLIPSIS_MARKER
     marker_width = str_width marker
     raise ArgumentError, "Marker too long: #{ marker.inspect }", caller_locations if marker_width > width
     if str_width(str) > width
@@ -148,11 +150,10 @@ module IS::Term::StringHelpers
   # @return [String] Aligned string padded with spaces
   # @raise +ArgumentError+ if invalid alignment +mode+
   # @example
-  #   IS::Term::StringHelpers.str_align("hi", 5) # => "hi   "
-  #   IS::Term::StringHelpers.str_align("hi", 5, :right) # => "   hi"
-  #   IS::Term::StringHelpers.str_align("hi", 5, :center) # => " hi  "
-  # @see #align
-  def str_align str, width, mode = ALIGN_LEFT
+  #   IS::Term::StringHelpers.str_align("hi", 6)          # => "hi    "
+  #   IS::Term::StringHelpers.str_align("hi", 6, :right)  # => "    hi"
+  #   IS::Term::StringHelpers.str_align("hi", 6, :center) # => "  hi  "
+  def str_align str, width, mode = DEFAULT_ALIGN_MODE
     src_width = str_width str
     return str if src_width >= width
     case mode
@@ -181,11 +182,11 @@ module IS::Term::StringHelpers
       IS::Term::StringHelpers::str_truncate self, width
     end
 
-    def ellipsis width, marker = '…'
+    def ellipsis width, marker = DEFAULT_ELLIPSIS_MARKER
       IS::Term::StringHelpers::str_ellipsis self, width, marker
     end
 
-    def align width, mode = ALIGN_LEFT
+    def align width, mode = DEFAULT_ALIGN_MODE
       IS::Term::StringHelpers::str_align self, width, mode
     end
 
