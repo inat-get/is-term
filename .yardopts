@@ -1,0 +1,5 @@
+--protected
+--private
+--no-private
+--title="IS::Term"
+lib/**/*

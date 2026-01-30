@@ -49,6 +49,7 @@ module IS::Term::StringHelpers
   ALIGN_LEFT   = :left
   ALIGN_RIGHT  = :right
   ALIGN_CENTER = :center
+  ALIGN_MODES  = [ ALIGN_LEFT, ALIGN_RIGHT, ALIGN_CENTER ]
 
   DEFAULT_ELLIPSIS_MARKER = '…'
   DEFAULT_ALIGN_MODE = ALIGN_LEFT
