@@ -38,18 +38,20 @@ require_relative 'info'
 module IS::Term::StringHelpers
 
   # @private
-  ESC_CODES = /\e\[[0-9;]*[a-zA-Z]/
+  ESC_CODES = /\e\[[0-9;]*[a-zA-Z]/.freeze
   # @private
-  EMOJI     = /\p{Emoji_Presentation}/
+  EMOJI     = /\p{Emoji_Presentation}/.freeze
   # @private
-  EAST_ASIA = /\p{Han}|\p{Hiragana}|\p{Katakana}|\p{Hangul}/
+  EAST_ASIA = /\p{Han}|\p{Hiragana}|\p{Katakana}|\p{Hangul}/.freeze
+  # @private
+  TOKEN     = /#{ ESC_CODES }|\X/.freeze
 
-  private_constant :ESC_CODES, :EMOJI, :EAST_ASIA
+  private_constant :ESC_CODES, :EMOJI, :EAST_ASIA, :TOKEN
 
   ALIGN_LEFT   = :left
   ALIGN_RIGHT  = :right
   ALIGN_CENTER = :center
-  ALIGN_MODES  = [ ALIGN_LEFT, ALIGN_RIGHT, ALIGN_CENTER ]
+  ALIGN_MODES  = [ ALIGN_LEFT, ALIGN_RIGHT, ALIGN_CENTER ].freeze
 
   DEFAULT_ELLIPSIS_MARKER = '…'
   DEFAULT_ALIGN_MODE = ALIGN_LEFT
@@ -69,7 +71,7 @@ module IS::Term::StringHelpers
   #   IS::Term::StringHelpers.str_width("\e[31mHi\e[0m") # => 2
   def str_width str
     current = 0
-    str.scan(/#{ ESC_CODES }|\X/) do |match|
+    str.scan(TOKEN) do |match|
       w = case match
       when ESC_CODES
         0
@@ -101,7 +103,7 @@ module IS::Term::StringHelpers
     return '' if width <= 0
     current = 0
     position = 0
-    str.scan(/#{ ESC_CODES }|\X/) do |match|
+    str.scan(TOKEN) do |match|
       w = case match
       when ESC_CODES
         0

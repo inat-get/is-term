@@ -1,29 +1,27 @@
 # frozen_string_literal: true
 
+require 'set'
 require 'singleton'
 require 'tty-screen'
 
 require_relative 'info'
 require_relative 'boolean'
 require_relative 'string_helpers'
-require_relative 'formats'
 
 class IS::Term::Error < StandardError; end
 class IS::Term::StateError < IS::Term::Error; end
 
 class IS::Term::StatusTable
 
-  include Singleton
+  # module Formats; end
+  # module Functions; end
 
+  include Singleton
+  
   using IS::Term::StringHelpers
 
   INVERT = "\e[7m"
 
-  FUNC_ESTIMATED = lambda { |row| row[:current] && row[:current] != 0 ? ((Time::now - row[:_started]) / row[:current]) * (row[:total] - row[:current]) : 0 }
-  FUNC_ELAPSED = lambda { |row| Time::now - row[:_started] }
-  FUNC_SPEED = lambda { |row| row[:_active] ? format('%.2f', row[:current].to_f / (Time::now - row[:_started])) : '' }
-  FUNC_PERCENT = lambda { |row| (row[:current] * 100) / row[:total] }
-  
   DEFAULT_IO = $stdout
   DEFAULT_SUMMARY_PREFIX = INVERT
 
@@ -67,15 +65,6 @@ class IS::Term::StatusTable
     !!@id_field && !@defs.empty?
   end
 
-  def empty?
-    @rows.empty?
-  end
-
-  # @return [Integer]
-  def count
-    @rows.size
-  end
-
   def available?
     !!@term && @term.is_a?(IO) && File.chardev?(@term)
   end
@@ -99,120 +88,6 @@ class IS::Term::StatusTable
       end
     end
     self
-  end
-
-  # @endgroup
-
-  # @group Status
-
-  # @return [Time, nil]
-  def started row_id = nil
-    if row_id.nil?
-      @started
-    else
-      return nil if @id_field.nil?
-      row = find_row row_id
-      return nil if row.nil?
-      row[:_started]
-    end
-  end
-
-  # @return [Boolean, nil]
-  def active? row_id = nil
-    if row_id.nil?
-      @rows.any? { |r| r[:_active] }
-    else
-      return nil if @id_field.nil?
-      row = find_row row_id
-      return nil if row.nil?
-      row[:_active]
-    end
-  end
-
-  # @return [Boolean, nil]
-  def done? row_id = nil
-    active = self.active?
-    return nil if active.nil?
-    !active
-  end
-
-  # @return [Integer, nil] in seconds
-  def elapsed row_id = nil
-    if row_id.nil?
-      Time::now - @started
-    else
-      return nil if @id_field.nil?
-      row = find_row row_id
-      return nil if row.nil?
-      Time::now - row[:_started]
-    end
-  end
-
-  # @return [Integer, nil] in seconds
-  def estimated row_id = nil
-    elapsed = self.elapsed row_id
-    current = self.current row_id
-    total   = self.total   row_id
-    return nil if elapsed.nil? || current.nil? || current == 0 || total.nil?
-    (elapsed / current) * (total - current)
-  end
-
-  # @return [Float, nil] steps by second (average)
-  def speed row_id = nil
-    elapsed = self.elapsed row_id
-    current = self.current row_id
-    return nil if elapsed.nil? || current.nil? || elapsed == 0
-    current.to_f / elapsed.to_f
-  end
-
-  # @return [Integer, nil]
-  # @see #current
-  # @see #total
-  def percent row_id = nil
-    current = self.current row_id
-    total   = self.total   row_id
-    return nil if current.nil? || total.nil? || total == 0
-    (current * 100) / total
-  end
-
-  # @return [Integer, nil]
-  # @see #total
-  def current row_id = nil
-    if row_id.nil?
-      @rows.select { |r| r[:current] != nil && r[:total] != nil }.map { |r| r[:current] }.sum
-    else
-      return nil if @id_field.nil?
-      row = find_row row_id
-      return nil if row.nil?
-      row[:current]
-    end
-  end
-
-  # @return [Integer, nil]
-  # @see #current
-  def total row_id = nil
-    if row_id.nil?
-      @rows.select { |r| r[:current] != nil && r[:total] != nil }.map { |r| r[:total] }.sum
-    else
-      return nil if @id_field.nil?
-      row = find_row row_id
-      return nil if row.nil?
-      row[:total]
-    end
-  end
-
-  # @return [Integer, nil]
-  # @see #count
-  # @see #done
-  def active
-    @rows.count { |r| r[:_active] }
-  end
-
-  # @return [Integer, nil]
-  # @see #count
-  # @see #active
-  def done
-    @rows.count { |r| !r[:_active] }
   end
 
   # @endgroup
@@ -257,6 +132,7 @@ class IS::Term::StatusTable
       yield row if block_given?
       if row[:_active] && @inactivate_if && @inactivate_if.call(row)
         row[:_active] = false
+        row[:_finished] = Time::now
         render_table
       else
         render_line row
@@ -299,8 +175,6 @@ class IS::Term::StatusTable
       format % value
     when Proc
       format[value]
-    when Symbol
-      IS::Term::Formats.send format, value
     else
       raise ArgumentError, "Unknown format value: #{ format.inspect }", caller_locations
     end
@@ -356,42 +230,12 @@ class IS::Term::StatusTable
       when Hash
         name = definition[:name]
         value = case definition[:summary]
-        when :none, nil
+        when nil
           ''
-        when :sum
-          @rows.map { |r| r[name] }.compact.sum
-        when :avg
-          if @rows.size > 0
-            @rows.map { |r| r[name] }.compact.sum / @rows.size
-          else
-            ''
-          end
-        when :min
-          @rows.map { |r| r[name] }.compact.min
-        when :max
-          @rows.map { |r| r[name] }.compact.max
-        when :count
-          @rows.map { |r| r[name] }.compact.size
-        when :elapsed
-          self.elapsed
-        when :estimated
-          self.estimated
-        when :percent
-          self.percent
-        when :speed
-          '%.2f' % self.speed
-        when :current
-          self.current
-        when :total
-          self.total
-        when :active
-          self.active
-        when :done
-          self.done
         when :value
           @summary_values[name]
         when Proc
-          definition.summary.call
+          definition[:summary].call
         end
         skip_width = value.is_a?(Array)
         value = value.first if skip_width
@@ -477,8 +321,10 @@ class IS::Term::StatusTable
 
   # @group Configuration DSL
 
-  SPECIAL_FORMATS = [ :time ]   # :percent_bar?
-  SUMMARY_FORMATS = [ :none, :sum, :avg, :max, :min, :count, :elapsed, :estimated, :percent, :speed, :current, :total, :active, :done, :value ]
+  # @private
+  SUMMARY_NONE = [ :none, false ].freeze
+  # @private
+  SUMMARY_VALS = [ :value ].freeze  
 
   # @return [void]
   def column name, id: false, func: nil, format: nil, width: nil, align: nil, summary: nil
@@ -489,12 +335,35 @@ class IS::Term::StatusTable
     raise ArgumentError, "Invalid id value: #{ id.inspect }", caller_locations unless id.nil? || id == true || id == false
     id = nil if id == false
     raise ArgumentError, "Id field already exists (#{ @id_field })" if @id_field && id
-    raise ArgumentError, "Invalid func value: #{ func.inspect }", caller_locations unless func.nil? || func.respond_to?(:call)
-    raise ArgumentError, "Invalid format value: #{ format.inspect }", caller_locations unless format.nil? || format.is_a?(String) || format.respond_to?(:call) || SPECIAL_FORMATS.include?(format)
+    func_keys = Set[]
+    if self.class.const_defined?(:Functions)
+      func_keys |= Set[*Functions::ROW_METHODS]
+    end
+    raise ArgumentError, "Invalid func value: #{ func.inspect }", caller_locations unless func.nil? || func.respond_to?(:call) || func_keys.include?(func)
+    if self.class.const_defined?(:Functions) && func.is_a?(Symbol)
+      func = Functions::RF func
+    end
+    format_keys = Set[]
+    if self.class.const_defined?(:Formats)
+      format_keys |= Set[*Formats::SPECIAL_FORMATS]
+    end
+    raise ArgumentError, "Invalid format value: #{ format.inspect }", caller_locations unless format.nil? || format.is_a?(String) || format.is_a?(Array) || format.respond_to?(:call) || format_keys.include?(format)
+    if self.class.const_defined?(:Formats) && format && !format.respond_to?(:call)
+      format = Formats::fmt format if format.is_a?(Symbol)
+      format = Formats::bar(*format) if format.is_a?(Array) 
+    end
     raise ArgumentError, "Invalid width value: #{ width.inspect }", caller_locations unless width.nil? || width.is_a?(Integer)
     raise ArgumentError, "Invalid align value: #{ align.inspect }", caller_locations unless align.nil? || IS::Term::StringHelpers::ALIGN_MODES.include?(align)
-    raise ArgumentError, "Invalid summary value: #{ summary.inspect }", caller_locations unless summary.nil? || summary == false || summary.is_a?(Proc) || SUMMARY_FORMATS.include?(summary)
-    summary = nil if summary == false || summary == :none
+    summary_keys = Set[*(SUMMARY_NONE + SUMMARY_VALS)]
+    if self.class.const_defined?(:Functions)
+      summary_keys |= Set[*(Functions::TABLE_METHODS + Functions::AGGREGATE_METHODS)]
+    end
+    raise ArgumentError, "Invalid summary value: #{ summary.inspect }", caller_locations unless summary_keys.include?(summary) || summary.is_a?(Proc) || summary.nil?
+    summary = nil if SUMMARY_NONE.include?(summary) || summary.nil?
+    if self.class.const_defined?(:Functions)
+      summary = Functions::TF summary if Functions::TABLE_METHODS.include?(summary)
+      summary = Functions::AF summary, name if Functions::AGGREGATE_METHODS.include?(summary)
+    end
     definition = { name: name, id: id, func: func, format: format, width: width, _width: (width || 0), align: align, summary: summary }.compact
     @defs << definition
     @id_field = name if id
@@ -538,3 +407,4 @@ class IS::Term::StatusTable
   # @endgroup
 
 end
+

@@ -1,34 +1,102 @@
 # frozen_string_literal: true
 
 require_relative 'info'
+require_relative 'string_helpers'
+require_relative 'statustable'
 
-module IS::Term::Formats
+module IS::Term::StatusTable::Formats
 
-  def time value
-    return '' if value == 0
-    value = value.to_i
-    result = ''
-    m, s = value.divmod 60
-    if m == 0
-      result = ('%ds' % s)
-    else
-      result = ('%02ds' % s)
-      h, m = m.divmod 60
-      if h == 0
-        result = ('%dm' % m) + result
+  class << self
+
+    using IS::Term::StringHelpers
+
+    # @group Formatters
+
+    # @return [String]
+    def duration value
+      return '' if value.nil? || value == 0
+      value = value.to_i
+      result = ''
+      m, s = value.divmod 60
+      if m == 0
+        result = ("%ds" % s)
       else
-        result = ('%02dm' % m) + result
-        d, h = h.divmod 24
-        if d == 0
-          result = ('%dh' % h) + result
+        result = ("%02ds" % s)
+        h, m = m.divmod 60
+        if h == 0
+          result = ("%dm" % m) + result
         else
-          result = ('%dd' % d) + ('%02dh' % h) + ':' + result
+          result = ("%02dm" % m) + result
+          d, h = h.divmod 24
+          if d == 0
+            result = ("%dh" % h) + result
+          else
+            result = ("%dd" % d) + ("%02dh" % h) + result
+          end
         end
       end
+      result
     end
-    result
+
+    # @return [String]
+    def percent_bar value, width, complete: '=', incomplete: ' ', head: '>', done: '≡'
+      return '' if value.nil?
+      if value >= 100
+        done * (width / done.width)
+      elsif value == 0
+        incomplete * (width / incomplete.width)
+      else
+        point = 100 / width
+        i = (100 - value) / (point * incomplete.width)
+        #h = 1
+        c = width - i * incomplete.width - head.width
+        if c < 0
+          i += c
+          c = 0
+        end
+        complete * c + head + incomplete * i
+      end
+    end
+
+    # @endgroup
+
   end
 
-  module_function :time
+  SPECIAL_FORMATS = [ :duration ]
+
+  class << self
+
+    # @group Formatter Access
+
+    # @return [Proc]
+    def fmt desc
+      case desc
+      when String
+        lambda do |value|
+          return '' if value.nil?
+          desc % value
+        end
+      when Symbol
+        raise NameError, "Invalid format name: #{ desc.inspect }", caller_locations unless SPECIAL_FORMATS.include?(desc)
+        self.method(desc).to_proc
+      else
+        raise ArgumentError, "Invalid format: #{ desc.inspect }", caller_locations
+      end
+    end
+
+    # @return [Proc]
+    def bar width, complete: '=', incomplete: ' ', head: '>', done: '≡'
+      opts = {
+        complete: complete,
+        incomplete: incomplete,
+        head: head,
+        done: done
+      }
+      lambda { |value| self.percent_bar(value, width, **opts) }
+    end
+
+    # @endgroup
+
+  end
 
 end
