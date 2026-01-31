@@ -39,17 +39,21 @@ module IS::Term::StatusTable::Formats
     end
 
     # @return [String]
-    def percent_bar value, width, complete: '=', incomplete: ' ', head: '>', done: '≡'
+    def percent_bar value, width, complete: '=', incomplete: ' ', head: '>', done: '≡', widths: [ nil, nil, nil, nil ]
       return '' if value.nil?
+      cw = widths[0] || complete&.width   || 0
+      iw = widths[1] || incomplete&.width || 0
+      hw = widths[2] || head&.width       || 0
+      dw = widths[3] || done&.width       || 0
       if value >= 100
-        done * (width / done.width)
+        done * (width / dw)
       elsif value == 0
-        incomplete * (width / incomplete.width)
+        incomplete * (width / iw)
       else
         point = 100 / width
-        i = (100 - value) / (point * incomplete.width)
+        i = (100 - value) / (point * iw)
         #h = 1
-        c = width - i * incomplete.width - head.width
+        c = (width - i * iw - hw) / cw
         if c < 0
           i += c
           c = 0
@@ -65,6 +69,8 @@ module IS::Term::StatusTable::Formats
   SPECIAL_FORMATS = [ :duration ]
 
   class << self
+
+    using IS::Term::StringHelpers
 
     # @group Formatter Access
 
@@ -90,7 +96,8 @@ module IS::Term::StatusTable::Formats
         complete: complete,
         incomplete: incomplete,
         head: head,
-        done: done
+        done: done,
+        widths: [ complete&.width, incomplete&.width, head&.width, done&.width ]
       }
       lambda { |value| self.percent_bar(value, width, **opts) }
     end
