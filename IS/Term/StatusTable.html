@@ -883,8 +883,6 @@
       <pre class="lines">
 
 
-330
-331
 332
 333
 334
@@ -924,10 +922,13 @@
 368
 369
 370
-371</pre>
+371
+372
+373
+374</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 330</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 332</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_column'>column</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>id:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>func:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>format:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>width:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>align:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>summary:</span> <span class='kw'>nil</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid name value: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Symbol</span><span class='rparen'>)</span>
@@ -956,6 +957,7 @@
   <span class='kw'>end</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid width value: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_width'>width</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_width'>width</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_width'>width</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Integer</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid align value: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_align'>align</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_align'>align</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="StringHelpers.html" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="StringHelpers.html#ALIGN_MODES-constant" title="IS::Term::StringHelpers::ALIGN_MODES (constant)">ALIGN_MODES</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_align'>align</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_align'>align</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="StringHelpers.html" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="StringHelpers.html#DEFAULT_ALIGN_MODE-constant" title="IS::Term::StringHelpers::DEFAULT_ALIGN_MODE (constant)">DEFAULT_ALIGN_MODE</a></span></span> <span class='kw'>if</span> <span class='id identifier rubyid_align'>align</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
   <span class='id identifier rubyid_summary_keys'>summary_keys</span> <span class='op'>=</span> <span class='const'>Set</span><span class='lbracket'>[</span><span class='op'>*</span><span class='lparen'>(</span><span class='const'>SUMMARY_NONE</span> <span class='op'>+</span> <span class='const'>SUMMARY_VALS</span><span class='rparen'>)</span><span class='rbracket'>]</span>
   <span class='kw'>if</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_const_defined?'>const_defined?</span><span class='lparen'>(</span><span class='symbol'>:Functions</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_summary_keys'>summary_keys</span> <span class='op'>|=</span> <span class='const'>Set</span><span class='lbracket'>[</span><span class='op'>*</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="StatusTable/Functions.html" title="IS::Term::StatusTable::Functions (module)">Functions</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="StatusTable/Functions.html#TABLE_METHODS-constant" title="IS::Term::StatusTable::Functions::TABLE_METHODS (constant)">TABLE_METHODS</a></span></span> <span class='op'>+</span> <span class='const'><span class='object_link'><a href="StatusTable/Functions.html" title="IS::Term::StatusTable::Functions (module)">Functions</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="StatusTable/Functions.html#AGGREGATE_METHODS-constant" title="IS::Term::StatusTable::Functions::AGGREGATE_METHODS (constant)">AGGREGATE_METHODS</a></span></span><span class='rparen'>)</span><span class='rbracket'>]</span>
@@ -1174,14 +1176,14 @@
       <pre class="lines">
 
 
-383
-384
-385
 386
-387</pre>
+387
+388
+389
+390</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 383</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 386</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_inactivate_if'>inactivate_if</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Block condition must be specified</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -1422,14 +1424,14 @@
       <pre class="lines">
 
 
-374
-375
-376
 377
-378</pre>
+378
+379
+380
+381</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 374</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 377</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_separator'>separator</span> <span class='id identifier rubyid_str'>str</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid separator: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
@@ -1465,16 +1467,16 @@
       <pre class="lines">
 
 
-399
-400
-401
 402
 403
 404
-405</pre>
+405
+406
+407
+408</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 399</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 402</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_summary'>summary</span> <span class='id identifier rubyid_show'>show</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>prefix:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_values'>values</span>
   <span class='ivar'>@show_summary</span> <span class='op'>=</span> <span class='id identifier rubyid_show'>show</span> <span class='kw'>unless</span> <span class='id identifier rubyid_show'>show</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -1525,14 +1527,14 @@
       <pre class="lines">
 
 
-390
-391
-392
 393
-394</pre>
+394
+395
+396
+397</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 390</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 393</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_terminal'>terminal</span> <span class='id identifier rubyid_io'>io</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid terminal value: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_io'>io</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_io'>io</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>IO</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_chardev?'>chardev?</span><span class='lparen'>(</span><span class='id identifier rubyid_io'>io</span><span class='rparen'>)</span>
@@ -1676,7 +1678,7 @@
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 31 06:37:59 2026 by
+  Generated on Sat Jan 31 21:30:22 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.38 (ruby-3.4.8).
 </div>
