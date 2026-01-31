@@ -202,6 +202,7 @@ class IS::Term::StatusTable
         end
         if definition[:width] && !skip_width
           value = value.ellipsis definition[:width]
+          value = value.align definition[:width], definition[:align]
         end
         return false if !skip_width && value.width > definition[:_width] && !@in_table_render
         result << value
@@ -246,6 +247,7 @@ class IS::Term::StatusTable
         end
         if definition[:width] && !skip_width
           value = value.ellipsis definition[:width]
+          value = value.align definition[:width], definition[:align]
         end
         return false if !skip_width && value.width > definition[:_width] && !@in_table_render
         result << value
@@ -354,6 +356,7 @@ class IS::Term::StatusTable
     end
     raise ArgumentError, "Invalid width value: #{ width.inspect }", caller_locations unless width.nil? || width.is_a?(Integer)
     raise ArgumentError, "Invalid align value: #{ align.inspect }", caller_locations unless align.nil? || IS::Term::StringHelpers::ALIGN_MODES.include?(align)
+    align = IS::Term::StringHelpers::DEFAULT_ALIGN_MODE if align.nil?
     summary_keys = Set[*(SUMMARY_NONE + SUMMARY_VALS)]
     if self.class.const_defined?(:Functions)
       summary_keys |= Set[*(Functions::TABLE_METHODS + Functions::AGGREGATE_METHODS)]
