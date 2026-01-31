@@ -1,6 +1,7 @@
+require_relative 'spec_helper'
 require_relative '../lib/is-term/string_helpers'
 
-describe "IS::Term::StringHelpers" do
+RSpec::describe "IS::Term::StringHelpers" do
   subject { IS::Term::StringHelpers }
 
   describe "#str_ellipsis" do
@@ -22,6 +23,9 @@ describe "IS::Term::StringHelpers" do
   describe "#str_width" do
     it "emoji + CJK" do
       expect(subject.str_width("中👨‍⚕️A中")).to eq 7  # 2+2+1+2
+    end
+    it "colored + accent" do
+      expect(subject.str_width("\e[1mOlólo\e[0m")).to eq 5
     end
   end
 end
