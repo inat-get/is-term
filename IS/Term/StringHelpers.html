@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Module: IS::Term::StringHelpers
+  
+    &mdash; IS::Term
+  
+</title>
+
+  <link rel="stylesheet" href="../../css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="../../css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "IS::Term::StringHelpers";
+  relpath = '../../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../../class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../../_index.html">Index (S)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span>
+     &raquo; 
+    <span class="title">StringHelpers</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Module: IS::Term::StringHelpers
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/is-term/string_helpers.rb</dd>
+  </dl>
+  
+</div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>Terminal string rendering utilities with proper width calculation for Unicode characters, emoji, East Asian characters, and ANSI escape sequences.</p>
+
+<p>This module provides essential string manipulation methods for terminal UIs, handling complex Unicode display widths correctly while ignoring ANSI color/style codes. It extends <code>String</code> via Refinements to provide a clean, chainable API.</p>
+
+<h2 id="features">Features</h2>
+<ul><li>
+<p>Correct width calculation (emoji=2, CJK=2, ASCII=1, ANSI=0)</p>
+</li><li>
+<p>Safe truncation preserving ANSI codes</p>
+</li><li>
+<p>Flexible alignment (left, right, center)</p>
+</li><li>
+<p>Ellipsis with configurable marker</p>
+</li></ul>
+
+<h2 id="usage">Usage</h2>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>is-term/string_helpers</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<p>Standalone (no refinements, no includes):</p>
+
+<pre class="code ruby"><code class="ruby"><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'>StringHelpers</span><span class='period'>.</span><span class='id identifier rubyid_str_width'><span class='object_link'><a href="#str_width-class_method" title="IS::Term::StringHelpers.str_width (method)">str_width</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>中👨‍⚕️</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='comment'># =&gt; 4
+</span></code></pre>
+
+<p>Include private methods:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_include'>include</span> <span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'>StringHelpers</span>
+<span class='id identifier rubyid_str_width'>str_width</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>中👨‍⚕️</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+<span class='comment'># =&gt; 4
+</span></code></pre>
+
+<p>With refinements (recommended):</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_using'>using</span> <span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'>StringHelpers</span>
+<span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>中👨‍⚕️</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_width'>width</span>       <span class='comment'># =&gt; 4
+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>中👨‍⚕️</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id identifier rubyid_ellipsis'>ellipsis</span><span class='lparen'>(</span><span class='int'>3</span><span class='rparen'>)</span> <span class='comment'># =&gt; &quot;中…&quot;
+</span></code></pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="ALIGN_LEFT-constant" class="">ALIGN_LEFT =
+          
+        </dt>
+        <dd><pre class="code"><span class='symbol'>:left</span></pre></dd>
+      
+        <dt id="ALIGN_RIGHT-constant" class="">ALIGN_RIGHT =
+          
+        </dt>
+        <dd><pre class="code"><span class='symbol'>:right</span></pre></dd>
+      
+        <dt id="ALIGN_CENTER-constant" class="">ALIGN_CENTER =
+          
+        </dt>
+        <dd><pre class="code"><span class='symbol'>:center</span></pre></dd>
+      
+        <dt id="ALIGN_MODES-constant" class="">ALIGN_MODES =
+          
+        </dt>
+        <dd><pre class="code"><span class='lbracket'>[</span> <span class='const'><span class='object_link'><a href="#ALIGN_LEFT-constant" title="IS::Term::StringHelpers::ALIGN_LEFT (constant)">ALIGN_LEFT</a></span></span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="#ALIGN_RIGHT-constant" title="IS::Term::StringHelpers::ALIGN_RIGHT (constant)">ALIGN_RIGHT</a></span></span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="#ALIGN_CENTER-constant" title="IS::Term::StringHelpers::ALIGN_CENTER (constant)">ALIGN_CENTER</a></span></span> <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      
+        <dt id="DEFAULT_ELLIPSIS_MARKER-constant" class="">DEFAULT_ELLIPSIS_MARKER =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>…</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="DEFAULT_ALIGN_MODE-constant" class="">DEFAULT_ALIGN_MODE =
+          
+        </dt>
+        <dd><pre class="code"><span class='const'><span class='object_link'><a href="#ALIGN_LEFT-constant" title="IS::Term::StringHelpers::ALIGN_LEFT (constant)">ALIGN_LEFT</a></span></span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#str_align-class_method" title="str_align (class method)">.<strong>str_align</strong>(str, width, mode = DEFAULT_ALIGN_MODE)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Aligns string within specified display width using spaces.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#str_ellipsis-class_method" title="str_ellipsis (class method)">.<strong>str_ellipsis</strong>(str, width, marker = DEFAULT_ELLIPSIS_MARKER)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Truncates string to fit within width, appending ellipsis marker if truncated.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#str_truncate-class_method" title="str_truncate (class method)">.<strong>str_truncate</strong>(str, width)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Truncates string to specified display width, preserving ANSI escape sequences.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#str_width-class_method" title="str_width (class method)">.<strong>str_width</strong>(str)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calculates the display width of a string in terminal context.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+    <h2>
+      Instance Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#str_align-instance_method" title="#str_align (instance method)">#<strong>str_align</strong>(str, width, mode = DEFAULT_ALIGN_MODE)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Aligns string within specified display width using spaces.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#str_ellipsis-instance_method" title="#str_ellipsis (instance method)">#<strong>str_ellipsis</strong>(str, width, marker = DEFAULT_ELLIPSIS_MARKER)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Truncates string to fit within width, appending ellipsis marker if truncated.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#str_truncate-instance_method" title="#str_truncate (instance method)">#<strong>str_truncate</strong>(str, width)  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Truncates string to specified display width, preserving ANSI escape sequences.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="private ">
+  <span class="summary_signature">
+    
+      <a href="#str_width-instance_method" title="#str_width (instance method)">#<strong>str_width</strong>(str)  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  <span class="note title private">private</span>
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Calculates the display width of a string in terminal context.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="str_align-class_method">
+  
+    .<strong>str_align</strong>(str, width, mode = DEFAULT_ALIGN_MODE)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Aligns string within specified display width using spaces.</p>
+
+<p>Returns original string if source width is greater than or equal to target. Supports left, right, and center alignment.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_align'>str_align</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hi</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>6</span><span class='rparen'>)</span>          <span class='comment'># =&gt; &quot;hi    &quot;
+</span><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_align'>str_align</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hi</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>6</span><span class='comma'>,</span> <span class='symbol'>:right</span><span class='rparen'>)</span>  <span class='comment'># =&gt; &quot;    hi&quot;
+</span><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_align'>str_align</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hi</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>6</span><span class='comma'>,</span> <span class='symbol'>:center</span><span class='rparen'>)</span> <span class='comment'># =&gt; &quot;  hi  &quot;</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Input string</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>width</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Target display width</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>mode</span>
+      
+      
+        <span class='type'>(<tt>:left</tt>, <tt>:right</tt>, <tt>:center</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>DEFAULT_ALIGN_MODE</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Alignment mode</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Aligned string padded with spaces</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p><code>ArgumentError</code> if invalid alignment <code>mode</code></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/is-term/string_helpers.rb', line 159</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_str_align'>str_align</span> <span class='id identifier rubyid_str'>str</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span> <span class='id identifier rubyid_mode'>mode</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#DEFAULT_ALIGN_MODE-constant" title="IS::Term::StringHelpers::DEFAULT_ALIGN_MODE (constant)">DEFAULT_ALIGN_MODE</a></span></span>
+  <span class='id identifier rubyid_src_width'>src_width</span> <span class='op'>=</span> <span class='id identifier rubyid_str_width'>str_width</span> <span class='id identifier rubyid_str'>str</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_str'>str</span> <span class='kw'>if</span> <span class='id identifier rubyid_src_width'>src_width</span> <span class='op'>&gt;=</span> <span class='id identifier rubyid_width'>width</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_mode'>mode</span>
+  <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#ALIGN_LEFT-constant" title="IS::Term::StringHelpers::ALIGN_LEFT (constant)">ALIGN_LEFT</a></span></span>
+    <span class='id identifier rubyid_str'>str</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='lparen'>(</span><span class='id identifier rubyid_width'>width</span> <span class='op'>-</span> <span class='id identifier rubyid_src_width'>src_width</span><span class='rparen'>)</span>
+  <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#ALIGN_RIGHT-constant" title="IS::Term::StringHelpers::ALIGN_RIGHT (constant)">ALIGN_RIGHT</a></span></span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='lparen'>(</span><span class='id identifier rubyid_width'>width</span> <span class='op'>-</span> <span class='id identifier rubyid_src_width'>src_width</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='id identifier rubyid_str'>str</span>
+  <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#ALIGN_CENTER-constant" title="IS::Term::StringHelpers::ALIGN_CENTER (constant)">ALIGN_CENTER</a></span></span>
+    <span class='id identifier rubyid_left'>left</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_width'>width</span> <span class='op'>-</span> <span class='id identifier rubyid_src_width'>src_width</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='int'>2</span>
+    <span class='id identifier rubyid_right'>right</span> <span class='op'>=</span> <span class='id identifier rubyid_width'>width</span> <span class='op'>-</span> <span class='id identifier rubyid_src_width'>src_width</span> <span class='op'>-</span> <span class='id identifier rubyid_left'>left</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_left'>left</span> <span class='op'>+</span> <span class='id identifier rubyid_str'>str</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_right'>right</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid align value: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_mode'>mode</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="str_ellipsis-class_method">
+  
+    .<strong>str_ellipsis</strong>(str, width, marker = DEFAULT_ELLIPSIS_MARKER)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Truncates string to fit within width, appending ellipsis marker if truncated.</p>
+
+<p>Raises <code>ArgumentError</code> if marker display width exceeds target width. Preserves ANSI codes and handles Unicode widths correctly.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_ellipsis'>str_ellipsis</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>中ABC</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>3</span><span class='rparen'>)</span>  <span class='comment'># =&gt; &quot;中…&quot;
+</span><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_ellipsis'>str_ellipsis</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>short</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>10</span><span class='rparen'>)</span> <span class='comment'># =&gt; &quot;short&quot;</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Input string</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>width</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Target display width</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>marker</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>DEFAULT_ELLIPSIS_MARKER</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Ellipsis marker (default: <tt>…</tt>)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Truncated string with marker or original string</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p><code>ArgumentError</code> if <span class='object_link'><a href="#str_width-class_method" title="IS::Term::StringHelpers.str_width (method)">str_width</a></span> of <code>marker</code> &gt; <code>width</code></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/is-term/string_helpers.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_str_ellipsis'>str_ellipsis</span> <span class='id identifier rubyid_str'>str</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span> <span class='id identifier rubyid_marker'>marker</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#DEFAULT_ELLIPSIS_MARKER-constant" title="IS::Term::StringHelpers::DEFAULT_ELLIPSIS_MARKER (constant)">DEFAULT_ELLIPSIS_MARKER</a></span></span>
+  <span class='id identifier rubyid_marker_width'>marker_width</span> <span class='op'>=</span> <span class='id identifier rubyid_str_width'>str_width</span> <span class='id identifier rubyid_marker'>marker</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Marker too long: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_marker'>marker</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>if</span> <span class='id identifier rubyid_marker_width'>marker_width</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_width'>width</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_str_width'>str_width</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_width'>width</span>
+    <span class='id identifier rubyid_str_truncate'>str_truncate</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span> <span class='op'>-</span> <span class='id identifier rubyid_marker_width'>marker_width</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='id identifier rubyid_marker'>marker</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_str'>str</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="str_truncate-class_method">
+  
+    .<strong>str_truncate</strong>(str, width)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Truncates string to specified display width, preserving ANSI escape sequences.</p>
+
+<p>ANSI codes are fully skipped (width 0), truncation occurs only on visible characters. Returns original string if already within width or empty string for non-positive widths.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_truncate'>str_truncate</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>中ABC</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>2</span><span class='rparen'>)</span>            <span class='comment'># =&gt; &quot;中&quot;
+</span><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_truncate'>str_truncate</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\e[31mHello\e[0m</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>3</span><span class='rparen'>)</span> <span class='comment'># =&gt; &quot;\e[31mHel&quot;</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Input string</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>width</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Maximum display width</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Truncated string (may be empty)</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p><code>ArgumentError</code> if width is invalid</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/is-term/string_helpers.rb', line 101</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_str_truncate'>str_truncate</span> <span class='id identifier rubyid_str'>str</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_str'>str</span> <span class='kw'>if</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&lt;=</span> <span class='id identifier rubyid_width'>width</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_width'>width</span> <span class='op'>&lt;=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_current'>current</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_position'>position</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_scan'>scan</span><span class='lparen'>(</span><span class='const'>TOKEN</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_match'>match</span><span class='op'>|</span>
+    <span class='id identifier rubyid_w'>w</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id identifier rubyid_match'>match</span>
+    <span class='kw'>when</span> <span class='const'>ESC_CODES</span>
+      <span class='int'>0</span>
+    <span class='kw'>when</span> <span class='const'>EMOJI</span><span class='comma'>,</span> <span class='const'>EAST_ASIA</span>
+      <span class='int'>2</span>
+    <span class='kw'>else</span>
+      <span class='int'>1</span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_current'>current</span> <span class='op'>+=</span> <span class='id identifier rubyid_w'>w</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_str'>str</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_current'>current</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_width'>width</span>
+    <span class='id identifier rubyid_position'>position</span> <span class='op'>+=</span> <span class='id identifier rubyid_match'>match</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_str'>str</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="str_width-class_method">
+  
+    .<strong>str_width</strong>(str)  &#x21d2; <tt>Integer</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calculates the display width of a string in terminal context.</p>
+
+<p>Handles Unicode display rules:</p>
+<ul><li>
+<p>ANSI escape sequences: width 0</p>
+</li><li>
+<p>Emoji: width 2</p>
+</li><li>
+<p>East Asian characters (Han, Hiragana, Katakana, Hangul): width 2</p>
+</li><li>
+<p>Other characters: width 1</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_width'>str_width</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>中👨‍⚕️A</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>         <span class='comment'># =&gt; 5
+</span><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_width'>str_width</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\e[31mHi\e[0m</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># =&gt; 2</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Input string</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Display width in columns</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/is-term/string_helpers.rb', line 72</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_str_width'>str_width</span> <span class='id identifier rubyid_str'>str</span>
+  <span class='id identifier rubyid_current'>current</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_scan'>scan</span><span class='lparen'>(</span><span class='const'>TOKEN</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_match'>match</span><span class='op'>|</span>
+    <span class='id identifier rubyid_w'>w</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id identifier rubyid_match'>match</span>
+    <span class='kw'>when</span> <span class='const'>ESC_CODES</span>
+      <span class='int'>0</span>
+    <span class='kw'>when</span> <span class='const'>EMOJI</span><span class='comma'>,</span> <span class='const'>EAST_ASIA</span>
+      <span class='int'>2</span>
+    <span class='kw'>else</span>
+      <span class='int'>1</span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_current'>current</span> <span class='op'>+=</span> <span class='id identifier rubyid_w'>w</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_current'>current</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="str_align-instance_method">
+  
+    #<strong>str_align</strong>(str, width, mode = DEFAULT_ALIGN_MODE)  &#x21d2; <tt>String</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Aligns string within specified display width using spaces.</p>
+
+<p>Returns original string if source width is greater than or equal to target. Supports left, right, and center alignment.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_align'><span class='object_link'><a href="#str_align-class_method" title="IS::Term::StringHelpers.str_align (method)">str_align</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hi</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>6</span><span class='rparen'>)</span>          <span class='comment'># =&gt; &quot;hi    &quot;
+</span><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_align'><span class='object_link'><a href="#str_align-class_method" title="IS::Term::StringHelpers.str_align (method)">str_align</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hi</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>6</span><span class='comma'>,</span> <span class='symbol'>:right</span><span class='rparen'>)</span>  <span class='comment'># =&gt; &quot;    hi&quot;
+</span><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_align'><span class='object_link'><a href="#str_align-class_method" title="IS::Term::StringHelpers.str_align (method)">str_align</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hi</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>6</span><span class='comma'>,</span> <span class='symbol'>:center</span><span class='rparen'>)</span> <span class='comment'># =&gt; &quot;  hi  &quot;</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Input string</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>width</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Target display width</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>mode</span>
+      
+      
+        <span class='type'>(<tt>:left</tt>, <tt>:right</tt>, <tt>:center</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>DEFAULT_ALIGN_MODE</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Alignment mode</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Aligned string padded with spaces</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p><code>ArgumentError</code> if invalid alignment <code>mode</code></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/is-term/string_helpers.rb', line 159</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_str_align'>str_align</span> <span class='id identifier rubyid_str'>str</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span> <span class='id identifier rubyid_mode'>mode</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#DEFAULT_ALIGN_MODE-constant" title="IS::Term::StringHelpers::DEFAULT_ALIGN_MODE (constant)">DEFAULT_ALIGN_MODE</a></span></span>
+  <span class='id identifier rubyid_src_width'>src_width</span> <span class='op'>=</span> <span class='id identifier rubyid_str_width'>str_width</span> <span class='id identifier rubyid_str'>str</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_str'>str</span> <span class='kw'>if</span> <span class='id identifier rubyid_src_width'>src_width</span> <span class='op'>&gt;=</span> <span class='id identifier rubyid_width'>width</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_mode'>mode</span>
+  <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#ALIGN_LEFT-constant" title="IS::Term::StringHelpers::ALIGN_LEFT (constant)">ALIGN_LEFT</a></span></span>
+    <span class='id identifier rubyid_str'>str</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='lparen'>(</span><span class='id identifier rubyid_width'>width</span> <span class='op'>-</span> <span class='id identifier rubyid_src_width'>src_width</span><span class='rparen'>)</span>
+  <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#ALIGN_RIGHT-constant" title="IS::Term::StringHelpers::ALIGN_RIGHT (constant)">ALIGN_RIGHT</a></span></span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='lparen'>(</span><span class='id identifier rubyid_width'>width</span> <span class='op'>-</span> <span class='id identifier rubyid_src_width'>src_width</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='id identifier rubyid_str'>str</span>
+  <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#ALIGN_CENTER-constant" title="IS::Term::StringHelpers::ALIGN_CENTER (constant)">ALIGN_CENTER</a></span></span>
+    <span class='id identifier rubyid_left'>left</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_width'>width</span> <span class='op'>-</span> <span class='id identifier rubyid_src_width'>src_width</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='int'>2</span>
+    <span class='id identifier rubyid_right'>right</span> <span class='op'>=</span> <span class='id identifier rubyid_width'>width</span> <span class='op'>-</span> <span class='id identifier rubyid_src_width'>src_width</span> <span class='op'>-</span> <span class='id identifier rubyid_left'>left</span>
+    <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_left'>left</span> <span class='op'>+</span> <span class='id identifier rubyid_str'>str</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span> <span class='op'>*</span> <span class='id identifier rubyid_right'>right</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid align value: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_mode'>mode</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="str_ellipsis-instance_method">
+  
+    #<strong>str_ellipsis</strong>(str, width, marker = DEFAULT_ELLIPSIS_MARKER)  &#x21d2; <tt>String</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Truncates string to fit within width, appending ellipsis marker if truncated.</p>
+
+<p>Raises <code>ArgumentError</code> if marker display width exceeds target width. Preserves ANSI codes and handles Unicode widths correctly.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_ellipsis'><span class='object_link'><a href="#str_ellipsis-class_method" title="IS::Term::StringHelpers.str_ellipsis (method)">str_ellipsis</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>中ABC</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>3</span><span class='rparen'>)</span>  <span class='comment'># =&gt; &quot;中…&quot;
+</span><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_ellipsis'><span class='object_link'><a href="#str_ellipsis-class_method" title="IS::Term::StringHelpers.str_ellipsis (method)">str_ellipsis</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>short</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>10</span><span class='rparen'>)</span> <span class='comment'># =&gt; &quot;short&quot;</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Input string</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>width</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Target display width</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>marker</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>DEFAULT_ELLIPSIS_MARKER</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Ellipsis marker (default: <tt>…</tt>)</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Truncated string with marker or original string</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p><code>ArgumentError</code> if <span class='object_link'><a href="#str_width-class_method" title="IS::Term::StringHelpers.str_width (method)">str_width</a></span> of <code>marker</code> &gt; <code>width</code></p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+135
+136
+137
+138
+139
+140
+141
+142
+143</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/is-term/string_helpers.rb', line 135</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_str_ellipsis'>str_ellipsis</span> <span class='id identifier rubyid_str'>str</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span> <span class='id identifier rubyid_marker'>marker</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="#DEFAULT_ELLIPSIS_MARKER-constant" title="IS::Term::StringHelpers::DEFAULT_ELLIPSIS_MARKER (constant)">DEFAULT_ELLIPSIS_MARKER</a></span></span>
+  <span class='id identifier rubyid_marker_width'>marker_width</span> <span class='op'>=</span> <span class='id identifier rubyid_str_width'>str_width</span> <span class='id identifier rubyid_marker'>marker</span>
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Marker too long: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_marker'>marker</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>if</span> <span class='id identifier rubyid_marker_width'>marker_width</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_width'>width</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_str_width'>str_width</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_width'>width</span>
+    <span class='id identifier rubyid_str_truncate'>str_truncate</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span> <span class='op'>-</span> <span class='id identifier rubyid_marker_width'>marker_width</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='id identifier rubyid_marker'>marker</span>
+  <span class='kw'>else</span>
+    <span class='id identifier rubyid_str'>str</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="str_truncate-instance_method">
+  
+    #<strong>str_truncate</strong>(str, width)  &#x21d2; <tt>String</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Truncates string to specified display width, preserving ANSI escape sequences.</p>
+
+<p>ANSI codes are fully skipped (width 0), truncation occurs only on visible characters. Returns original string if already within width or empty string for non-positive widths.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_truncate'><span class='object_link'><a href="#str_truncate-class_method" title="IS::Term::StringHelpers.str_truncate (method)">str_truncate</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>中ABC</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>2</span><span class='rparen'>)</span>            <span class='comment'># =&gt; &quot;中&quot;
+</span><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_truncate'><span class='object_link'><a href="#str_truncate-class_method" title="IS::Term::StringHelpers.str_truncate (method)">str_truncate</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\e[31mHello\e[0m</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='int'>3</span><span class='rparen'>)</span> <span class='comment'># =&gt; &quot;\e[31mHel&quot;</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Input string</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>width</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Maximum display width</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Truncated string (may be empty)</p>
+</div>
+      
+    </li>
+  
+</ul>
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'></span>
+      
+      
+      
+        
+        <div class='inline'>
+<p><code>ArgumentError</code> if width is invalid</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/is-term/string_helpers.rb', line 101</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_str_truncate'>str_truncate</span> <span class='id identifier rubyid_str'>str</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_str'>str</span> <span class='kw'>if</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&lt;=</span> <span class='id identifier rubyid_width'>width</span>
+  <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_width'>width</span> <span class='op'>&lt;=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_current'>current</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_position'>position</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_scan'>scan</span><span class='lparen'>(</span><span class='const'>TOKEN</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_match'>match</span><span class='op'>|</span>
+    <span class='id identifier rubyid_w'>w</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id identifier rubyid_match'>match</span>
+    <span class='kw'>when</span> <span class='const'>ESC_CODES</span>
+      <span class='int'>0</span>
+    <span class='kw'>when</span> <span class='const'>EMOJI</span><span class='comma'>,</span> <span class='const'>EAST_ASIA</span>
+      <span class='int'>2</span>
+    <span class='kw'>else</span>
+      <span class='int'>1</span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_current'>current</span> <span class='op'>+=</span> <span class='id identifier rubyid_w'>w</span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_str'>str</span><span class='lbracket'>[</span><span class='int'>0</span><span class='comma'>,</span> <span class='id identifier rubyid_position'>position</span><span class='rbracket'>]</span> <span class='kw'>if</span> <span class='id identifier rubyid_current'>current</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_width'>width</span>
+    <span class='id identifier rubyid_position'>position</span> <span class='op'>+=</span> <span class='id identifier rubyid_match'>match</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_str'>str</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="str_width-instance_method">
+  
+    #<strong>str_width</strong>(str)  &#x21d2; <tt>Integer</tt>  <span class="extras">(private)</span>
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Calculates the display width of a string in terminal context.</p>
+
+<p>Handles Unicode display rules:</p>
+<ul><li>
+<p>ANSI escape sequences: width 0</p>
+</li><li>
+<p>Emoji: width 2</p>
+</li><li>
+<p>East Asian characters (Han, Hiragana, Katakana, Hangul): width 2</p>
+</li><li>
+<p>Other characters: width 1</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <div class="examples">
+    <h4 class="tag_title">Examples:</h4>
+    
+      
+      <pre class="example code"><code><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_width'><span class='object_link'><a href="#str_width-class_method" title="IS::Term::StringHelpers.str_width (method)">str_width</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>中👨‍⚕️A</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>         <span class='comment'># =&gt; 5
+</span><span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="" title="IS::Term::StringHelpers (module)">StringHelpers</a></span></span><span class='period'>.</span><span class='id identifier rubyid_str_width'><span class='object_link'><a href="#str_width-class_method" title="IS::Term::StringHelpers.str_width (method)">str_width</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\e[31mHi\e[0m</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='comment'># =&gt; 2</span></code></pre>
+    
+  </div>
+<p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Input string</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Display width in columns</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/is-term/string_helpers.rb', line 72</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_str_width'>str_width</span> <span class='id identifier rubyid_str'>str</span>
+  <span class='id identifier rubyid_current'>current</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_scan'>scan</span><span class='lparen'>(</span><span class='const'>TOKEN</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_match'>match</span><span class='op'>|</span>
+    <span class='id identifier rubyid_w'>w</span> <span class='op'>=</span> <span class='kw'>case</span> <span class='id identifier rubyid_match'>match</span>
+    <span class='kw'>when</span> <span class='const'>ESC_CODES</span>
+      <span class='int'>0</span>
+    <span class='kw'>when</span> <span class='const'>EMOJI</span><span class='comma'>,</span> <span class='const'>EAST_ASIA</span>
+      <span class='int'>2</span>
+    <span class='kw'>else</span>
+      <span class='int'>1</span>
+    <span class='kw'>end</span>
+    <span class='id identifier rubyid_current'>current</span> <span class='op'>+=</span> <span class='id identifier rubyid_w'>w</span>
+  <span class='kw'>end</span>
+  <span class='id identifier rubyid_current'>current</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Sat Jan 31 02:21:31 2026 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.38 (ruby-3.4.8).
+</div>
+
+    </div>
+  </body>
+</html>
