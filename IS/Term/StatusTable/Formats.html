@@ -95,7 +95,7 @@
         <dt id="SPECIAL_FORMATS-constant" class="">SPECIAL_FORMATS =
           
         </dt>
-        <dd><pre class="code"><span class='lbracket'>[</span> <span class='symbol'>:duration</span> <span class='rbracket'>]</span></pre></dd>
+        <dd><pre class="code"><span class='lbracket'>[</span> <span class='symbol'>:duration</span><span class='comma'>,</span> <span class='symbol'>:skip</span> <span class='rbracket'>]</span></pre></dd>
       
     </dl>
   
@@ -140,6 +140,28 @@
   <span class="summary_signature">
     
       <a href="#percent_bar-class_method" title="percent_bar (class method)">.<strong>percent_bar</strong>(value, width, complete: &#39;=&#39;, incomplete: &#39; &#39;, head: &#39;&gt;&#39;, done: &#39;≡&#39;, widths: [ nil, nil, nil, nil ])  &#x21d2; String </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#skip-class_method" title="skip (class method)">.<strong>skip</strong>(value)  &#x21d2; String </a>
     
 
     
@@ -257,19 +279,19 @@
       <pre class="lines">
 
 
-94
-95
-96
-97
-98
 99
 100
 101
 102
-103</pre>
+103
+104
+105
+106
+107
+108</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/formats.rb', line 94</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/formats.rb', line 99</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_bar'>bar</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span> <span class='label'>complete:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>=</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>incomplete:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>head:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>done:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>≡</span><span class='tstring_end'>&#39;</span></span>
   <span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span>
@@ -417,11 +439,6 @@
       <pre class="lines">
 
 
-78
-79
-80
-81
-82
 83
 84
 85
@@ -430,10 +447,15 @@
 88
 89
 90
-91</pre>
+91
+92
+93
+94
+95
+96</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/formats.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/formats.rb', line 83</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fmt'>fmt</span> <span class='id identifier rubyid_desc'>desc</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_desc'>desc</span>
@@ -491,11 +513,6 @@
       <pre class="lines">
 
 
-42
-43
-44
-45
-46
 47
 48
 49
@@ -512,10 +529,15 @@
 60
 61
 62
-63</pre>
+63
+64
+65
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/formats.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/formats.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_percent_bar'>percent_bar</span> <span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_width'>width</span><span class='comma'>,</span> <span class='label'>complete:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>=</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>incomplete:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>head:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&gt;</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>done:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>≡</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>widths:</span> <span class='lbracket'>[</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='kw'>nil</span> <span class='rbracket'>]</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -544,12 +566,64 @@
 </table>
 </div>
     
+      <div class="method_details ">
+  <h3 class="signature " id="skip-class_method">
+  
+    .<strong>skip</strong>(value)  &#x21d2; <tt>String</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+42
+43
+44</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/is-term/formats.rb', line 42</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_skip'>skip</span> <span class='id identifier rubyid_value'>value</span>
+  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
   </div>
 
 </div>
 
       <div id="footer">
-  Generated on Sat Jan 31 21:33:15 2026 by
+  Generated on Sat Jan 31 21:53:57 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.38 (ruby-3.4.8).
 </div>
