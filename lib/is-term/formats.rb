@@ -39,6 +39,11 @@ module IS::Term::StatusTable::Formats
     end
 
     # @return [String]
+    def skip value
+      ''
+    end
+
+    # @return [String]
     def percent_bar value, width, complete: '=', incomplete: ' ', head: '>', done: '≡', widths: [ nil, nil, nil, nil ]
       return '' if value.nil?
       cw = widths[0] || complete&.width   || 0
@@ -66,7 +71,7 @@ module IS::Term::StatusTable::Formats
 
   end
 
-  SPECIAL_FORMATS = [ :duration ]
+  SPECIAL_FORMATS = [ :duration, :skip ]
 
   class << self
 
