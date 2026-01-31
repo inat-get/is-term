@@ -22,7 +22,7 @@ jobs:
       - name: Build
         run: |
           echo "Build..."
-          bundle exec rake docs
+          bundle exec yardoc
       - name: Publish
         uses: jekyll-is/action-jekyll-is-publish@v1
         with:
