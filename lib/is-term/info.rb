@@ -7,7 +7,7 @@ module IS::Term; end
 module IS::Term::Info
 
   NAME = 'is-term'
-  VERSION = '0.8.2'
+  VERSION = '0.8.4'
   AUTHOR = "Ivan Shikhalev"
   AUTHOR_URL = "https://github.com/shikhalev"
   EMAIL = "shikhalev@gmail.com"
