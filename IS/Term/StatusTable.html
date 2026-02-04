@@ -747,8 +747,6 @@
       <pre class="lines">
 
 
-100
-101
 102
 103
 104
@@ -765,10 +763,12 @@
 115
 116
 117
-118</pre>
+118
+119
+120</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 102</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_append'>append</span> <span class='op'>**</span><span class='id identifier rubyid_data'>data</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="StateError.html" title="IS::Term::StateError (class)">StateError</a></span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>StatusTable is not ready for work</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_available?'>available?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_configured?'>configured?</span>
@@ -831,12 +831,12 @@
       <pre class="lines">
 
 
-68
-69
-70</pre>
+70
+71
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 68</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_available?'>available?</span>
   <span class='op'>!</span><span class='op'>!</span><span class='ivar'>@term</span> <span class='op'>&amp;&amp;</span> <span class='ivar'>@term</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>IO</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_chardev?'>chardev?</span><span class='lparen'>(</span><span class='ivar'>@term</span><span class='rparen'>)</span>
@@ -883,8 +883,6 @@
       <pre class="lines">
 
 
-332
-333
 334
 335
 336
@@ -925,10 +923,12 @@
 371
 372
 373
-374</pre>
+374
+375
+376</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 332</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 334</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_column'>column</span> <span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>id:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>func:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>format:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>width:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>align:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>summary:</span> <span class='kw'>nil</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid name value: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>Symbol</span><span class='rparen'>)</span>
@@ -1028,8 +1028,6 @@
       <pre class="lines">
 
 
-150
-151
 152
 153
 154
@@ -1038,10 +1036,12 @@
 157
 158
 159
-160</pre>
+160
+161
+162</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 150</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 152</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_configure'>configure</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
   <span class='kw'>if</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -1096,12 +1096,12 @@
       <pre class="lines">
 
 
-64
-65
-66</pre>
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 66</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_configured?'>configured?</span>
   <span class='op'>!</span><span class='op'>!</span><span class='ivar'>@id_field</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='ivar'>@defs</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
@@ -1176,14 +1176,14 @@
       <pre class="lines">
 
 
-386
-387
 388
 389
-390</pre>
+390
+391
+392</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 386</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 388</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_inactivate_if'>inactivate_if</span> <span class='op'>&amp;</span><span class='id identifier rubyid_block'>block</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Block condition must be specified</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_block_given?'>block_given?</span>
@@ -1232,8 +1232,6 @@
       <pre class="lines">
 
 
-73
-74
 75
 76
 77
@@ -1250,10 +1248,12 @@
 88
 89
 90
-91</pre>
+91
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 73</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 75</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_reset!'>reset!</span>
   <span class='kw'>if</span> <span class='ivar'>@in_configure</span>
@@ -1319,14 +1319,18 @@
 55
 56
 57
-58</pre>
+58
+59
+60</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_row'>row</span> <span class='id identifier rubyid_row_id'>row_id</span>
   <span class='kw'>return</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='ivar'>@id_field</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-  <span class='ivar'>@rows</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='id identifier rubyid_r'>r</span><span class='lbracket'>[</span><span class='ivar'>@id_field</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='id identifier rubyid_row_id'>row_id</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span>
+  <span class='id identifier rubyid_result'>result</span> <span class='op'>=</span> <span class='ivar'>@rows</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_r'>r</span><span class='op'>|</span> <span class='id identifier rubyid_r'>r</span><span class='lbracket'>[</span><span class='ivar'>@id_field</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='id identifier rubyid_row_id'>row_id</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span>
+  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_delete'>delete</span> <span class='symbol'>:_mutex</span> <span class='kw'>if</span> <span class='id identifier rubyid_result'>result</span>
+  <span class='id identifier rubyid_result'>result</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1424,14 +1428,14 @@
       <pre class="lines">
 
 
-377
-378
 379
 380
-381</pre>
+381
+382
+383</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 377</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 379</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_separator'>separator</span> <span class='id identifier rubyid_str'>str</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> </span><span class='tstring_end'>&#39;</span></span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid separator: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_str'>str</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
@@ -1467,16 +1471,16 @@
       <pre class="lines">
 
 
-402
-403
 404
 405
 406
 407
-408</pre>
+408
+409
+410</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 402</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 404</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_summary'>summary</span> <span class='id identifier rubyid_show'>show</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>prefix:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_values'>values</span>
   <span class='ivar'>@show_summary</span> <span class='op'>=</span> <span class='id identifier rubyid_show'>show</span> <span class='kw'>unless</span> <span class='id identifier rubyid_show'>show</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -1527,14 +1531,14 @@
       <pre class="lines">
 
 
-393
-394
 395
 396
-397</pre>
+397
+398
+399</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 393</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 395</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_terminal'>terminal</span> <span class='id identifier rubyid_io'>io</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid terminal value: </span><span class='embexpr_beg'>#{</span> <span class='id identifier rubyid_io'>io</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span> <span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_io'>io</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>IO</span><span class='rparen'>)</span> <span class='op'>&amp;&amp;</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_chardev?'>chardev?</span><span class='lparen'>(</span><span class='id identifier rubyid_io'>io</span><span class='rparen'>)</span>
@@ -1624,8 +1628,6 @@
       <pre class="lines">
 
 
-123
-124
 125
 126
 127
@@ -1643,10 +1645,12 @@
 139
 140
 141
-142</pre>
+142
+143
+144</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'lib/is-term/statustable.rb', line 125</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span> <span class='op'>**</span><span class='id identifier rubyid_data'>data</span>
   <span class='id identifier rubyid_raise'>raise</span> <span class='const'><span class='object_link'><a href="../../IS.html" title="IS (module)">IS</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Term.html" title="IS::Term (module)">Term</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="StateError.html" title="IS::Term::StateError (class)">StateError</a></span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>StatusTable is not ready for work</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_caller_locations'>caller_locations</span> <span class='kw'>unless</span> <span class='id identifier rubyid_available?'>available?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_configured?'>configured?</span>
@@ -1678,7 +1682,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Feb  4 04:17:51 2026 by
+  Generated on Wed Feb  4 04:21:39 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.38 (ruby-3.4.8).
 </div>
