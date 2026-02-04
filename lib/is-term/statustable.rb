@@ -54,7 +54,9 @@ class IS::Term::StatusTable
   # @return [Hash, nil]
   def row row_id
     return nil if @id_field.nil?
-    @rows.find { |r| r[@id_field] == row_id }.dup.freeze
+    result = @rows.find { |r| r[@id_field] == row_id }.dup
+    result.delete :_mutex if result
+    result.freeze
   end
 
   # @endgroup
