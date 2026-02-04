@@ -351,7 +351,7 @@ class IS::Term::StatusTable
     end
     raise ArgumentError, "Invalid format value: #{ format.inspect }", caller_locations unless format.nil? || format.is_a?(String) || format.is_a?(Array) || format.respond_to?(:call) || format_keys.include?(format)
     if self.class.const_defined?(:Formats) && format && !format.respond_to?(:call)
-      format = Formats::fmt format if format.is_a?(Symbol)
+      format = Formats::fmt format if format.is_a?(Symbol) || format.is_a?(String)
       format = Formats::bar(*format) if format.is_a?(Array) 
     end
     raise ArgumentError, "Invalid width value: #{ width.inspect }", caller_locations unless width.nil? || width.is_a?(Integer)
