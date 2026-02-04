@@ -116,7 +116,9 @@ class IS::Term::StatusTable
       @term.puts ''
       render_table
     end
-    row
+    result = row.dup
+    result.delete :_mutex
+    result.freeze
   end
 
   # @yield
@@ -140,7 +142,9 @@ class IS::Term::StatusTable
         render_line row
       end
     end
-    row
+    result = row.dup
+    result.delete :_mutex
+    result.freeze
   end
 
   # @endgroup
