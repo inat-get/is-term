@@ -15,6 +15,7 @@ Gem::Specification::new do |spec|
   spec.required_ruby_version = '>= 3.4'
 
   spec.add_dependency 'tty-screen', '~> 0.8'
+  spec.add_dependency 'is-boolean', '~> 0.8'
 
   spec.add_development_dependency 'rdoc'
   spec.add_development_dependency 'rake'

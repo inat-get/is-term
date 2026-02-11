@@ -3,9 +3,9 @@
 require 'set'
 require 'singleton'
 require 'tty-screen'
+require 'is-boolean'
 
 require_relative 'info'
-require_relative 'boolean'
 require_relative 'string_helpers'
 
 class IS::Term::Error < StandardError; end
