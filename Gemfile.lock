@@ -1,8 +1,9 @@
 PATH
   remote: .
   specs:
-    is-term (0.8.4.6)
+    is-term (0.8.4.8)
       is-boolean (~> 0.8)
+      is-duration (~> 0.8.4)
       tty-screen (~> 0.8)
 
 GEM
@@ -13,6 +14,9 @@ GEM
     docile (1.4.1)
     erb (6.0.1)
     is-boolean (0.8.0)
+    is-duration (0.8.4)
+      is-enum (~> 0.8.8)
+    is-enum (0.8.8.2)
     psych (5.3.1)
       date
       stringio
@@ -65,7 +69,9 @@ CHECKSUMS
   docile (1.4.1) sha256=96159be799bfa73cdb721b840e9802126e4e03dfc26863db73647204c727f21e
   erb (6.0.1) sha256=28ecdd99c5472aebd5674d6061e3c6b0a45c049578b071e5a52c2a7f13c197e5
   is-boolean (0.8.0) sha256=a470c0407307fc3e71e785ac3847d500abd157e8874e94747a713050572afdb3
-  is-term (0.8.4.6)
+  is-duration (0.8.4) sha256=56123755b5871d6f6ff351fadb5f30d62bcf7307c0fad1342e534df7141daa50
+  is-enum (0.8.8.2) sha256=de3bdaec0a101569ae806f49d98c8b180e5c827e7339125ec2ffa809f126099e
+  is-term (0.8.4.8)
   psych (5.3.1) sha256=eb7a57cef10c9d70173ff74e739d843ac3b2c019a003de48447b2963d81b1974
   rake (13.3.1) sha256=8c9e89d09f66a26a01264e7e3480ec0607f0c497a861ef16063604b1b08eb19c
   rdoc (7.1.0) sha256=494899df0706c178596ca6e1d50f1b7eb285a9b2aae715be5abd742734f17363

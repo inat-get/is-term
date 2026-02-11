@@ -7,12 +7,12 @@ module IS::Term; end
 module IS::Term::Info
 
   NAME = 'is-term'
-  VERSION = '0.8.4.6'
+  VERSION = '0.8.4.8'
   AUTHOR = "Ivan Shikhalev"
   AUTHOR_URL = "https://github.com/shikhalev"
   EMAIL = "shikhalev@gmail.com"
 
-  LICENSE = "GPL-3.0-or-later"
+  LICENSE = "LGPL-3.0-only"
   LICENSE_URL = "https://github.com/inat-get/is-term/blob/main/LICENSE"
 
   SUMMARY = "Terminal utilities for Ruby scripts"

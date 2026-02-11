@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'is-duration'
+
 require_relative 'info'
 require_relative 'string_helpers'
 require_relative 'statustable'
@@ -14,28 +16,7 @@ module IS::Term::StatusTable::Formats
 
     # @return [String]
     def duration value
-      return '' if value.nil? || value == 0
-      value = value.to_i
-      result = ''
-      m, s = value.divmod 60
-      if m == 0
-        result = ("%ds" % s)
-      else
-        result = ("%02ds" % s)
-        h, m = m.divmod 60
-        if h == 0
-          result = ("%dm" % m) + result
-        else
-          result = ("%02dm" % m) + result
-          d, h = h.divmod 24
-          if d == 0
-            result = ("%dh" % h) + result
-          else
-            result = ("%dd" % d) + ("%02dh" % h) + result
-          end
-        end
-      end
-      result
+      IS::Duration::format value, units: (:s..:w), empty: :minor, zeros: :fill
     end
 
     # @return [String]
