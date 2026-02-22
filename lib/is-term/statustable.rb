@@ -210,7 +210,7 @@ class IS::Term::StatusTable
           value = value.ellipsis definition[:width]
           value = value.align definition[:width], definition[:align]
         end
-        return false if !skip_width && value.width > definition[:_width] && !@in_table_render
+        return false if !skip_width && value && value.width > definition[:_width] && !@in_table_render
         result << value
         break if skip_width
       else
@@ -255,7 +255,7 @@ class IS::Term::StatusTable
           value = value.ellipsis definition[:width]
           value = value.align definition[:width], definition[:align]
         end
-        return false if !skip_width && value.width > definition[:_width] && !@in_table_render
+        return false if !skip_width && value && value.width > definition[:_width] && !@in_table_render
         result << value
         break if skip_width
       else
@@ -272,7 +272,7 @@ class IS::Term::StatusTable
     if prerendered && summary
       line = ''
       (0 .. prerendered.size - 1).each do |idx|
-        value = prerendered[idx]
+        value = prerendered[idx] || ''
         definition = @defs[idx]
         value = value.align definition[:_width], (definition[:align] || IS::Term::StringHelpers::ALIGN_LEFT) if !definition.is_a?(String)
         line += value
@@ -317,6 +317,7 @@ class IS::Term::StatusTable
         line = ''
       end
       ln.each_with_index do |value, idx|
+        value ||= ''
         definition = @defs[idx]
         value = value.align definition[:_width], (definition[:align] || IS::Term::StringHelpers::ALIGN_LEFT) if !definition.is_a?(String)
         line += value
