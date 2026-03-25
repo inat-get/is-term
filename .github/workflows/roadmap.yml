@@ -1,0 +1,41 @@
+name: Generate Roadmap
+concurrency:
+  group: roadmap-generation
+  cancel-in-progress: true
+on:
+  issues:
+    types:
+      - opened
+      - edited
+      - closed
+      - reopened
+      - assigned
+      - unassigned
+      - labeled
+      - unlabeled
+      - milestoned
+      - demilestoned
+  milestone:
+    types:
+      - created
+      - edited
+      - deleted
+      - opened
+      - closed
+  push:
+    paths:
+      - '.github/roadmap-styles.yml'
+      - '.github/workflows/roadmap.yml'
+  workflow_dispatch:
+jobs:
+  roadmap:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: inat-get/action-is-roadmap@main
+        name: Generate Roadmap
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          output_type: wiki
+          wiki_title: Roadmap
