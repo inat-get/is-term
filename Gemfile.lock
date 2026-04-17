@@ -48,7 +48,7 @@ GEM
     stringio (3.2.0)
     tsort (0.2.0)
     tty-screen (0.8.2)
-    yard (0.9.38)
+    yard (0.9.42)
 
 PLATFORMS
   ruby
@@ -87,7 +87,7 @@ CHECKSUMS
   stringio (3.2.0) sha256=c37cb2e58b4ffbd33fe5cd948c05934af997b36e0b6ca6fdf43afa234cf222e1
   tsort (0.2.0) sha256=9650a793f6859a43b6641671278f79cfead60ac714148aabe4e3f0060480089f
   tty-screen (0.8.2) sha256=c090652115beae764336c28802d633f204fb84da93c6a968aa5d8e319e819b50
-  yard (0.9.38) sha256=721fb82afb10532aa49860655f6cc2eaa7130889df291b052e1e6b268283010f
+  yard (0.9.42) sha256=4e2be01f8623556093497731d44c801e600d7c9759ec7a35a2dd5dd83bbbba68
 
 BUNDLED WITH
   4.0.4
